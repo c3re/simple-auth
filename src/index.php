@@ -49,7 +49,7 @@ header("HTTP/1.1 403 Forbidden");
     <h1>Login</h1>
     <form method="POST" id="form">
         <label for="user"><span>Username:</span></label>
-        <input type="text" id="user" name="user" required>
+        <input type="text" id="user" name="user" required autocapitalize="off" autocomplete="username" autocorrect="off" spellcheck="false">
         <br>
         <label for="pass"><span>Password:</span></label>
         <input type="password" id="password" name="password" required>
