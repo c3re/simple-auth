@@ -8,10 +8,29 @@ function checkLogin($user,$pass){
         && trim($pass) === trim(getenv("AUTH_PASSWORD")));
 }
 
+function checkBypass(){
+    foreach(apache_request_headers() as $header => $value) {
+        if (strtolower($header) === 'x-auth-key') {
+            $keys=explode(",",getenv("AUTH_BYPASS_KEYS"));
+            foreach($keys as $key) {
+                if (trim($value) === trim($key)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+
+
 ob_start();
 session_name("simpleauth");
 session_start();
-
+if(checkBypass()) {
+    $_SESSION['loggedin'] = true;
+    exit;
+}
 if(isset($_COOKIE['login'])) {
     $loginCookie = json_decode(urldecode($_COOKIE['login']), true);
     if (is_array($loginCookie) && isset($loginCookie['user']) && isset($loginCookie['password'])) {
@@ -22,6 +41,9 @@ if(isset($_COOKIE['login'])) {
     }
     setcookie("login", "", time() - 3600, "/");
 }
+
+
+
 if(!isset($_SESSION['loggedin'])) $_SESSION['loggedin'] == false;
 $_SESSION['loggedin']=boolval($_SESSION['loggedin']);
 if($_SESSION['loggedin']) exit;
