@@ -65,6 +65,10 @@ header("HTTP/1.1 403 Forbidden");
         input{
             margin-bottom: 1em;
         }
+        @media (prefers-color-scheme: dark) {
+            body { background: #1a1a1a; color: #e0e0e0; }
+            input { background: #2a2a2a; color: #e0e0e0; border: 1px solid #444; }
+        }
     </style>
 </head>
 <body>
